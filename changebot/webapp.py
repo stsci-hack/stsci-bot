@@ -17,7 +17,7 @@ app.private_key = os.environ['GITHUB_APP_PRIVATE_KEY']
 app.cron_token = os.environ.get('CRON_TOKEN', None)
 app.stale_issue_close = os.environ.get('STALE_ISSUE_CLOSE', 'FALSE').lower() == 'true'
 app.stale_issue_close_seconds = float(os.environ.get('STALE_ISSUE_CLOSE_SECONDS', 'inf'))
-app.stale_issue_warn_seconds = float(os.environ.get'STALE_ISSUE_WARN_SECONDS', 'inf'))
+app.stale_issue_warn_seconds = float(os.environ.get('STALE_ISSUE_WARN_SECONDS', 'inf'))
 app.stale_pull_requests_close = os.environ.get('STALE_PULL_REQUEST_CLOSE', 'FALSE').lower() == 'true'
 app.stale_pull_requests_close_seconds = float(os.environ.get('STALE_PULL_REQUEST_CLOSE_SECONDS', 'inf'))
 app.stale_pull_requests_warn_seconds = float(os.environ.get('STALE_PULL_REQUEST_WARN_SECONDS', 'inf'))
