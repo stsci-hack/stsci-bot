@@ -31,11 +31,10 @@ may also choose to add `keep-open` label to keep this PR open but it is
 discouraged unless absolutely necessary.
 
 If this PR is still needed to be reviewed, as an author, you can rebase it
-to reset the clock. You may also consider to send a reminder e-mail about it
-to the [astropy-dev mailing list](http://groups.google.com/group/astropy-dev).
+to reset the clock.
 
 *If you believe I commented on this pull request incorrectly, please report
- this [here](https://github.com/astropy/astropy-bot/issues).*
+ this [here](https://github.com/spacetelescope/stsci-bot/issues).*
 """).strip()
 
 
@@ -52,7 +51,7 @@ open an issue to keep track of it. Thanks!
 
 *If this is the first time I am commenting on this issue, or if you believe
  I closed this issue incorrectly, please report this
- [here](https://github.com/astropy/astropy-bot/issues)*
+ [here](https://github.com/spacetelescope/stsci-bot/issues)*
 """).strip()
 
 
@@ -81,7 +80,7 @@ def process_pull_requests(repository, installation):
         dt = now - commit_time
 
         if current_app.stale_pull_requests_close and dt > current_app.stale_pull_requests_close_seconds:
-            comment_ids = pr.find_comments('astropy-bot[bot]', filter_keep=is_close_epilogue)
+            comment_ids = pr.find_comments('stsci-bot[bot]', filter_keep=is_close_epilogue)
             if len(comment_ids) == 0:
                 print(f'-> CLOSING issue {n}')
                 pr.submit_comment(PULL_REQUESTS_CLOSE_EPILOGUE)
@@ -89,7 +88,7 @@ def process_pull_requests(repository, installation):
             else:
                 print(f'-> Skipping issue {n} (already closed)')
         elif dt > current_app.stale_pull_requests_warn_seconds:
-            comment_ids = pr.find_comments('astropy-bot[bot]', filter_keep=is_close_warning)
+            comment_ids = pr.find_comments('stsci-bot[bot]', filter_keep=is_close_warning)
             if len(comment_ids) == 0:
                 print(f'-> WARNING issue {n}')
                 pr.submit_comment(PULL_REQUESTS_CLOSE_WARNING.format(pasttime=naturaldelta(dt),
