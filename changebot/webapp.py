@@ -14,13 +14,13 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 
 app.integration_id = int(os.environ['GITHUB_APP_INTEGRATION_ID'])
 app.private_key = os.environ['GITHUB_APP_PRIVATE_KEY']
-app.cron_token = os.environ['CRON_TOKEN']
-app.stale_issue_close = os.environ['STALE_ISSUE_CLOSE'].lower() == 'true'
-app.stale_issue_close_seconds = float(os.environ['STALE_ISSUE_CLOSE_SECONDS'])
-app.stale_issue_warn_seconds = float(os.environ['STALE_ISSUE_WARN_SECONDS'])
-app.stale_pull_requests_close = os.environ['STALE_PULL_REQUEST_CLOSE'].lower() == 'true'
-app.stale_pull_requests_close_seconds = float(os.environ['STALE_PULL_REQUEST_CLOSE_SECONDS'])
-app.stale_pull_requests_warn_seconds = float(os.environ['STALE_PULL_REQUEST_WARN_SECONDS'])
+app.cron_token = os.environ.get('CRON_TOKEN', None)
+app.stale_issue_close = os.environ.get('STALE_ISSUE_CLOSE', 'FALSE').lower() == 'true'
+app.stale_issue_close_seconds = float(os.environ.get('STALE_ISSUE_CLOSE_SECONDS', 'inf'))
+app.stale_issue_warn_seconds = float(os.environ.get'STALE_ISSUE_WARN_SECONDS', 'inf'))
+app.stale_pull_requests_close = os.environ.get('STALE_PULL_REQUEST_CLOSE', 'FALSE').lower() == 'true'
+app.stale_pull_requests_close_seconds = float(os.environ.get('STALE_PULL_REQUEST_CLOSE_SECONDS', 'inf'))
+app.stale_pull_requests_warn_seconds = float(os.environ.get('STALE_PULL_REQUEST_WARN_SECONDS', 'inf'))
 
 app.register_blueprint(pull_request_checker)
 app.register_blueprint(stale_issues)
