@@ -24,7 +24,7 @@ Hi humans :wave: - this issue was labeled as **Close?** approximately {pasttime}
 
 If you think this issue should not be closed, a maintainer should remove the **Close?** label - otherwise, I'm just gonna have to close this issue in {futuretime}. Your time starts now! Tick tock :clock10:
 
-*If you believe I commented on this issue incorrectly, please report this [here](https://github.com/astropy/astropy-bot/issues)*
+*If you believe I commented on this issue incorrectly, please report this [here](https://github.com/spacetelescope/stsci-bot/issues)*
 """
 
 
@@ -37,7 +37,7 @@ ISSUE_CLOSE_EPILOGUE = """
 
 I'm going to close this issue as per my previous message. But if you feel that we should really really keep this open, then feel free to re-open and remove the **Close?** label. But no one has done anything for 6 months, so... Just sayin!
 
-*If this is the first time I am commenting on this issue, or if you believe I closed this issue incorrectly, please report this [here](https://github.com/astropy/astropy-bot/issues)*
+*If this is the first time I am commenting on this issue, or if you believe I closed this issue incorrectly, please report this [here](https://github.com/spacetelescope/stsci-bot/issues)*
 """
 
 
@@ -65,7 +65,7 @@ def process_issues(repository, installation):
         dt = now - labeled_time
 
         if current_app.stale_issue_close and dt > current_app.stale_issue_close_seconds:
-            comment_ids = issue.find_comments('astropy-bot[bot]', filter_keep=is_close_epilogue)
+            comment_ids = issue.find_comments('stsci-bot[bot]', filter_keep=is_close_epilogue)
             if len(comment_ids) == 0:
                 print(f'-> CLOSING issue {n}')
                 issue.submit_comment(ISSUE_CLOSE_EPILOGUE)
@@ -73,7 +73,7 @@ def process_issues(repository, installation):
             else:
                 print(f'-> Skipping issue {n} (already closed)')
         elif dt > current_app.stale_issue_warn_seconds:
-            comment_ids = issue.find_comments('astropy-bot[bot]', filter_keep=is_close_warning)
+            comment_ids = issue.find_comments('stsci-bot[bot]', filter_keep=is_close_warning)
             if len(comment_ids) == 0:
                 print(f'-> WARNING issue {n}')
                 issue.submit_comment(ISSUE_CLOSE_WARNING.format(pasttime=naturaltime(dt),

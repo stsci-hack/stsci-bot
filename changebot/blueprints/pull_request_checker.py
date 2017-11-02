@@ -64,7 +64,7 @@ def process_changelog_consistency(repository, number, installation):
     issues = check_changelog_consistency(repo_handler, pr_handler)
 
     # Find previous comments by this app
-    comment_ids = pr_handler.find_comments('astropy-bot[bot]', filter_keep=is_changelog_message)
+    comment_ids = pr_handler.find_comments('stsci-bot[bot]', filter_keep=is_changelog_message)
 
     if len(comment_ids) == 0:
         comment_id = None
@@ -104,15 +104,15 @@ def process_changelog_consistency(repository, number, installation):
 
         message += "Everything looks good from my point of view! :+1:"
 
-    message += "\n\n*If there are any issues with this message, please report them [here](https://github.com/astropy/astropy-bot/issues)*"
+    message += "\n\n*If there are any issues with this message, please report them [here](https://github.com/spacetelescope/stsci-bot/issues)*"
 
     pr_handler.submit_comment(message, comment_id=comment_id)
 
     if len(issues) == 0:
-        pr_handler.set_status('success', 'All checks passed', 'astropy-bot')
+        pr_handler.set_status('success', 'All checks passed', 'stsci-bot')
     else:
         pr_handler.set_status('failure', 'There were failures in checks - see '
-                                         'comments by @astropy-bot above',
-                                         'astropy-bot')
+                                         'comments by @stsci-bot above',
+                                         'stsci-bot')
 
     return message
