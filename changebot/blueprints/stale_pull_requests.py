@@ -22,22 +22,23 @@ def close_stale_pull_requests():
 
 PULL_REQUESTS_CLOSE_WARNING = re.sub('(\w+)\n', r'\1', """
 Hi humans :wave: - this pull request hasn't had any new commits for
-approximately {pasttime}. **I plan to close this in {futuretime} if the pull
-request doesn't have any new commits by then.**
+ approximately {pasttime}. **I plan to close this in {futuretime} if the pull
+ request doesn't have any new commits by then.**
 
 In lieu of a stalled pull request, please consider closing this and open an
-issue instead if a reminder is needed to revisit in the future. Maintainers
-may also choose to add `keep-open` label to keep this PR open but it is
-discouraged unless absolutely necessary.
+ issue instead if a reminder is needed to revisit in the future. Maintainers
+ may also choose to add `keep-open` label to keep this PR open but it is
+ discouraged unless absolutely necessary.
 
-If this PR is still needed to be reviewed, as an author, you can rebase it
-to reset the clock.
+If this PR still needs to be reviewed, as an author, you can rebase it
+ to reset the clock.
 
 *If you believe I commented on this pull request incorrectly, please report
  this [here](https://github.com/spacetelescope/stsci-bot/issues).*
 """).strip()
 
 
+# NOTE: This must be in-sync with PULL_REQUESTS_CLOSE_WARNING
 def is_close_warning(message):
     return 'Hi humans :wave: - this pull request hasn\'t had any new commits' in message
 
@@ -46,12 +47,16 @@ PULL_REQUESTS_CLOSE_EPILOGUE = re.sub('(\w+)\n', r'\1', """
 :alarm_clock: Time's up! :alarm_clock:
 
 I'm going to close this pull request as per my previous message. If you
-think what is being added/fixed here is still important, please remember to
-open an issue to keep track of it. Thanks!
+ think what is being added/fixed here is still important, please remember to
+ open an issue to keep track of it. Thanks!
 
 *If this is the first time I am commenting on this issue, or if you believe
  I closed this issue incorrectly, please report this
+<<<<<<< HEAD
  [here](https://github.com/spacetelescope/stsci-bot/issues)*
+=======
+ [here](https://github.com/astropy/astropy-bot/issues).*
+>>>>>>> astropy-master
 """).strip()
 
 
@@ -67,6 +72,10 @@ def process_pull_requests(repository, installation):
     repo = RepoHandler(repository, 'master', installation)
     pull_requests = repo.open_pull_requests()
 
+    # User config
+    enable_autoclose = repo.get_config_value(
+        'autoclose_stale_pull_request', True)
+
     for n in pull_requests:
 
         print(f'Checking {n}')
@@ -81,7 +90,9 @@ def process_pull_requests(repository, installation):
 
         if current_app.stale_pull_requests_close and dt > current_app.stale_pull_requests_close_seconds:
             comment_ids = pr.find_comments('stsci-bot[bot]', filter_keep=is_close_epilogue)
-            if len(comment_ids) == 0:
+            if not enable_autoclose:
+                print(f'-> Skipping issue {n} (auto-close disabled)')
+            elif len(comment_ids) == 0:
                 print(f'-> CLOSING issue {n}')
                 pr.submit_comment(PULL_REQUESTS_CLOSE_EPILOGUE)
                 pr.close()
