@@ -49,7 +49,7 @@ def hook():
 CHANGELOG_PROLOGUE = re.sub('(\w+)\n', r'\1', """
 Hi there @{user} :wave: - thanks for the pull request! I'm just
  a friendly :robot: that checks for
- issues related to the changelog and making sure that this
+ issues related to the changelog. I help make sure that this
  pull request is milestoned and labeled correctly. This is
  mainly intended for the maintainers, so if you are not
  a maintainer you can ignore this, and a maintainer will let
