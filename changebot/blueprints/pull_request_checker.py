@@ -15,19 +15,11 @@ def hook():
 
     event = request.headers['X-GitHub-Event']
 
-    print("got event:", event)
-    with open('/tmp/stsci-bot.log', 'a') as handle:
-        handle.write(str(event))
-
     if event not in ('pull_request', 'issues', 'push'):
         return "Not a pull_request or issues event"
 
-
     # Parse the JSON sent by GitHub
     payload = json.loads(request.data)
-
-    #if event == 'push':
-    #    process_push_event(payload)
 
     if 'installation' not in payload:
         return "No installation key found in payload"
@@ -41,6 +33,8 @@ def hook():
     elif event == 'issues':
         if payload['action'] not in ('milestoned', 'demilestoned'):
             return 'Action \'' + payload['action'] + '\' does not require action'
+    elif event == 'push':
+        return process_push_event(payload)
 
     if event == 'pull_request':
         number = payload['pull_request']['number']
@@ -165,3 +159,8 @@ def process_changelog_consistency(repository, number, installation):
                               target_url=comment_url)
 
     return message
+
+
+def process_push_event(payload):
+    print("process_push_event")
+    print("{}".format(payload))
