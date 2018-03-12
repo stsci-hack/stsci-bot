@@ -9,24 +9,41 @@ from changebot.github.github_api import RepoHandler, PullRequestHandler
 
 pull_request_checker = Blueprint('pull_request_checker', __name__)
 
+import logging
+logFormatter = logging.Formatter("%(asctime)s [%(levelname)-5.5s]  %(message)s")
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+fileHandler = logging.FileHandler("{0}/{1}.log".format('/tmp', 'bot'))
+fileHandler.setFormatter(logFormatter)
+fileHandler.setLevel(logging.DEBUG)
+logger.addHandler(fileHandler)
+
+consoleHandler = logging.StreamHandler()
+consoleHandler.setFormatter(logFormatter)
+consoleHandler.setLevel(logging.DEBUG)
+logger.addHandler(consoleHandler)
+
 
 @pull_request_checker.route('/hook', methods=['POST'])
 def hook():
 
     event = request.headers['X-GitHub-Event']
-    print(event)
+    logger.debug(event)
 
     if event not in ('pull_request', 'issues', 'push'):
         return "Not a pull_request or issues event"
 
     # Parse the JSON sent by GitHub
     payload = json.loads(request.data)
+    logger.debug("processed payload")
 
     if 'installation' not in payload:
-        print("no installation key found in payload")
+        logger.warn("no installation key found in payload")
         return "No installation key found in payload"
     else:
         installation = payload['installation']['id']
+        logger.debug("found installation key")
 
     # We only need to listen to certain kinds of events:
     if event == 'pull_request':
@@ -36,6 +53,7 @@ def hook():
         if payload['action'] not in ('milestoned', 'demilestoned'):
             return 'Action \'' + payload['action'] + '\' does not require action'
     elif event == 'push':
+        logger.debug("calling process_push_event")
         return process_push_event(payload)
 
     if event == 'pull_request':
@@ -164,6 +182,6 @@ def process_changelog_consistency(repository, number, installation):
 
 
 def process_push_event(payload):
-    print("process_push_event")
-    print("{}".format(payload))
+    logger.debug("process_push_event")
+    logger.debug("{}".format(payload))
     return "Processed push event"
