@@ -14,7 +14,9 @@ pull_request_checker = Blueprint('pull_request_checker', __name__)
 def hook():
 
     event = request.headers['X-GitHub-Event']
-    print(event)
+
+    with open('/tmp/stsci-bot.log', 'w') as handle:
+        handle.write(event)
 
     if event not in ('pull_request', 'issues', 'push'):
         return "Not a pull_request or issues event"
