@@ -35,6 +35,7 @@ def hook():
         return "Not a pull_request or issues event"
 
     # Parse the JSON sent by GitHub
+    logger.debug("getting ready to process payload...")
     payload = json.loads(request.data)
     logger.debug("processed payload")
 
