@@ -15,8 +15,9 @@ def hook():
 
     event = request.headers['X-GitHub-Event']
 
-    with open('/tmp/stsci-bot.log', 'w') as handle:
-        handle.write(event)
+    print("got event:", event)
+    with open('/tmp/stsci-bot.log', 'a') as handle:
+        handle.write(str(event))
 
     if event not in ('pull_request', 'issues', 'push'):
         return "Not a pull_request or issues event"
