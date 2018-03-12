@@ -166,3 +166,4 @@ def process_changelog_consistency(repository, number, installation):
 def process_push_event(payload):
     print("process_push_event")
     print("{}".format(payload))
+    return "Processed push event"
