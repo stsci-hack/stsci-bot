@@ -14,12 +14,17 @@ pull_request_checker = Blueprint('pull_request_checker', __name__)
 def hook():
 
     event = request.headers['X-GitHub-Event']
+    print(event)
 
-    if event not in ('pull_request', 'issues'):
+    if event not in ('pull_request', 'issues', 'push'):
         return "Not a pull_request or issues event"
+
 
     # Parse the JSON sent by GitHub
     payload = json.loads(request.data)
+
+    #if event == 'push':
+    #    process_push_event(payload)
 
     if 'installation' not in payload:
         return "No installation key found in payload"
