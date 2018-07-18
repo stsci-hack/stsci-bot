@@ -29,9 +29,9 @@ app.register_blueprint(stale_pull_requests)
 
 @app.route("/")
 def index():
-    return "Nothing to see here"
+    return '{"message": "Nothing to see here"}'
 
 
 @app.route("/installation_authorized")
 def installation_authorized():
-    return "Installation authorized"
+    return '{"message": "Installation authorized"}'
